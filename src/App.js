@@ -1,5 +1,8 @@
-import logo from './logo.svg'
 import './App.css'
+
+import Header from './Header'
+
+
 
 function App() {
 
@@ -12,19 +15,12 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <pre>
-          Text in a pre element is displayed in a fixed-width font, and it
-          preserves both spaces and line breaks
-        </pre>
-        <br />
+   
+    <Header/>
 
         <p>
           Hello {handleNameChange()}!
         </p>
-      </header>
     </div>
   )
 }
