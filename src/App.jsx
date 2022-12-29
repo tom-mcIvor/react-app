@@ -5,6 +5,7 @@ import SearchItem from './SearchItem'
 import AddItem from './AddItem'
 import Content from './Content'
 import Footer from './Footer'
+
 import { useState } from "react";
 
 function App() {
@@ -58,7 +59,7 @@ function App() {
         setSearch={setSearch}
       />
       <Content
-        items={items}
+        items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
         handleCheck={handleCheck}
         handleDelete={handleDelete}
       />
