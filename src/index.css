@@ -160,7 +160,7 @@ button:hover {
   outline: none;
 }
 
-.searchForm {
+.searchForm { 
   width: 100%;
   display: flex;
   justify-content: flex-start;
