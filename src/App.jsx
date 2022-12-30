@@ -5,8 +5,8 @@ import SearchItem from './SearchItem'
 import AddItem from './AddItem'
 import Content from './Content'
 import Footer from './Footer'
-
 import { useState, useEffect } from "react";
+import apiRequest from './apiRequest'
 
 function App() {
 
@@ -41,17 +41,40 @@ function App() {
   }, [])
 
 
-  const addItem = (item) => {
+  const addItem = async (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
-    const MyNewItem = { id, checked: false, item }
-    const listItems = [...items, MyNewItem];
+    const myNewItem = { id, checked: false, item }
+    const listItems = [...items, myNewItem];
     setItems(listItems)
 
+
+    const postOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(myNewItem)
+    }
+    const result = await apiRequest(API_URL, postOptions)
+    if (result) setFetchError(result)
   }
 
-  const handleCheck = (id) => {
+
+  const handleCheck = async (id) => {
     const listItems = items.map((item) => item.id === id ? { ...item, checked: !item.checked } : item)
     setItems(listItems)
+
+    const myItem = listItems.filter((item) => item.id === id)
+    const updateOptions = {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'applications/json'
+      },
+      body: JSON.stringify({ checked: myItem[0].checked})
+    }
+    const reqUrl = `${API_URL}/${id}`
+    const result = await apiRequest(reqUrl, updateOptions)
+    if (result) setFetchError(result)
   }
 
   const handleDelete = (id) => {
@@ -79,7 +102,7 @@ function App() {
         setSearch={setSearch}
       />
       <main>
-        {isLoading && <p>Loading Items...</p> }
+        {isLoading && <p>Loading Items...</p>}
         {fetchError && <p style={{ color: 'red' }}>{`Error: ${fetchError}`}</p>}
         {!fetchError && !isLoading && <Content
           items={items.filter(item => ((item.item).toLowerCase()).includes(search.toLowerCase()))}
